@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_person_center_list_model_manager.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_person_center_list_cell.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
@@ -9,10 +10,13 @@ import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TLDAAAPersonCenterListPage extends StatefulWidget {
-  TLDAAAPersonCenterListPage({Key key,this.type}) : super(key: key);
+  TLDAAAPersonCenterListPage({Key key,this.type,this.refreshCallBack}) : super(key: key);
+
+  final Function refreshCallBack;
 
   final int type;
 
@@ -31,6 +35,8 @@ class _TLDAAAPersonCenterListPageState extends State<TLDAAAPersonCenterListPage>
   RefreshController _refreshController;
 
   StreamSubscription _refreshSubscription;
+
+  bool _isLoading = false;
 
   @override
   void initState() { 
@@ -80,8 +86,41 @@ class _TLDAAAPersonCenterListPageState extends State<TLDAAAPersonCenterListPage>
     });
   }
 
+  void _receiveEarnings(int upgradeLogId){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.getEarningWithId(upgradeLogId, (){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      Fluttertoast.showToast(msg: '领取成功');
+      widget.refreshCallBack();
+    }, (TLDError error){
+      if (mounted){
+        setState(() {
+          _isLoading = false;
+        });
+      }
+      if (error.code == 333){
+        showDialog(context: context,builder : (context) {
+          return TLDAlertView(title: '温馨提示',alertString: error.msg,sureTitle:  '确定',didClickSureBtn: (){
+          });
+        });
+      }else{
+        Fluttertoast.showToast(msg: error.msg);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    return LoadingOverlay(isLoading: _isLoading, child: _getRefreshWidget());
+  }
+
+  Widget _getRefreshWidget(){
     return SmartRefresher(
       enablePullUp: true,
       enablePullDown: true,
@@ -123,7 +162,9 @@ class _TLDAAAPersonCenterListPageState extends State<TLDAAAPersonCenterListPage>
       itemCount: _dataSource.length,
       itemBuilder: (BuildContext context, int index) {
         TLDAAAUpgradeListModel model = _dataSource[index];
-      return TLDAAAPersonCenterListCell(index: index,listModel: model,);
+      return TLDAAAPersonCenterListCell(index: index,type: widget.type,listModel: model,didClickRecieveBtn: (){
+        _receiveEarnings(model.upgradeLogId);
+      },);
      },
     );
   }

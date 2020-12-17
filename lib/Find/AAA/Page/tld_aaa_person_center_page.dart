@@ -283,7 +283,9 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
   Widget  _getBodyWidget(){
     return TabBarView(
       children: [
-      SafeArea(child: TLDAAAPersonCenterListPage(type: 2,)),
+      SafeArea(child: TLDAAAPersonCenterListPage(type: 2,refreshCallBack: (){
+        _getUserInfo();
+      },)),
       SafeArea(child: TLDAAAPersonCenterListPage(type: 1,))
     ],
     controller:  _tabController,

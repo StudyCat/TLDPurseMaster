@@ -306,12 +306,6 @@ class _TLDAAAPlusStarActionSheetState extends State<TLDAAAPlusStarActionSheet> w
               1,
               '钱包支付'
             )),
-        Padding(
-            padding: EdgeInsets.only(left: ScreenUtil().setWidth(30)),
-            child: _getSingleChoiceWidget(
-              2,
-              '余利宝支付'
-            ))
       ]),
     );
    }

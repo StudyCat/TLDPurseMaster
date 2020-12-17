@@ -21,7 +21,7 @@ class _TLDAboutUsHeaderCellState extends State<TLDAboutUsHeaderCell> {
             padding : EdgeInsets.only(top : size.height / 5),
             child: Image.asset('assetss/images/tld_icon.png',width: ScreenUtil().setWidth(472),height : ScreenUtil().setWidth(108)),),
           Padding(padding: EdgeInsets.only(top : ScreenUtil().setHeight(40),bottom: ScreenUtil().setHeight(100)),
-          child: Text('v2.3.0',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51)),),
+          child: Text('v1.0.0',style: TextStyle(fontSize : ScreenUtil().setSp(28),color : Color.fromARGB(255, 51, 51, 51)),),
           )
         ],
       ),

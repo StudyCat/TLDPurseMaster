@@ -25,7 +25,7 @@ void main(){
     TLDNewIMManager().init();
 
     jPush.setup(
-      appKey: '6676dc14cae09d6f15abe751',
+      appKey: '3003807b24785e5d37bf681d',
       channel: "developer-default",
       production: false,
       debug: false,

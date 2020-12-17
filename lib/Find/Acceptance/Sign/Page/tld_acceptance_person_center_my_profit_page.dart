@@ -37,7 +37,7 @@ class _TLDAcceptancePersonCenterMyProfitPageState extends State<TLDAcceptancePer
       _modelManager.getMyProfit((List profitList){
         _refreshController.refreshCompleted();
         _dataSource = [];
-        if (mounted){
+        if (mounted){ 
           setState(() {
             _dataSource.addAll(profitList);
           });

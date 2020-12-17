@@ -23,14 +23,14 @@ class _TLDAAATabbarPageState extends State<TLDAAATabbarPage> {
             fontSize: 10,
           )),
     ),
-    // BottomNavigationBarItem(
-    //   activeIcon: Image.asset('assetss/images/icon_aaa_plus_star.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-    //   icon: Image.asset('assetss/images/icon_aaa_plus_star_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
-    //   title: Text('团队升星',
-    //       style: TextStyle(
-    //         fontSize: 10,
-    //       )),
-    // ),
+    BottomNavigationBarItem(
+      activeIcon: Image.asset('assetss/images/icon_aaa_plus_star.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      icon: Image.asset('assetss/images/icon_aaa_plus_star_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
+      title: Text('团队升星',
+          style: TextStyle(
+            fontSize: 10,
+          )),
+    ),
     BottomNavigationBarItem(
       activeIcon: Image.asset('assetss/images/icon_friend_team.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
       icon: Image.asset('assetss/images/icon_friend_team_unsel.png',width: ScreenUtil().setWidth(60),height: ScreenUtil().setWidth(60),fit: BoxFit.cover,),
@@ -59,7 +59,7 @@ class _TLDAAATabbarPageState extends State<TLDAAATabbarPage> {
 
     pages =  [
       TLDAAAPersonCenterPage(),
-      // TLDAAAPlusStarPage(),
+      TLDAAAPlusStarPage(),
       TLDAAAFriendTeamPage()
       ];
   }

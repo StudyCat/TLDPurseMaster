@@ -163,13 +163,6 @@ class _TLDAAAUpgradeActionSheetState extends State<TLDAAAUpgradeActionSheet> {
               '钱包支付',
               2
             )),
-        Padding(
-            padding: EdgeInsets.only(left: ScreenUtil().setWidth(30)),
-            child: _getSingleChoiceWidget(
-              2,
-              '余利宝支付',
-              2
-            ))
       ]),
     );
   }

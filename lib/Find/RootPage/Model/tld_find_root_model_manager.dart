@@ -101,19 +101,7 @@ class TLDFindRootModelManager {
   static List get uiModelList {
     return [
       TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).playingMethodLabel, isHaveNotice: true, items: [
-        TLDFindRootCellUIItemModel(
-            title: I18n.of(navigatorKey.currentContext).tldRedEnvelope, imageAssest: 'assetss/images/red_envelope_icon.png',isPlusIcon: false),
-        TLDFindRootCellUIItemModel(
-            title: I18n.of(navigatorKey.currentContext).game, imageAssest: 'assetss/images/game_icon.png',isPlusIcon: false),
-        TLDFindRootCellUIItemModel(
-            title: I18n.of(navigatorKey.currentContext).missionLabel, imageAssest: 'assetss/images/icon_choose_mission.png',isPlusIcon: false),
-        TLDFindRootCellUIItemModel(
-            title: I18n.of(navigatorKey.currentContext).promotion, imageAssest: 'assetss/images/icon_promotion.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true),
-      ]),
-      TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).otherLabel, isHaveNotice: false,items: [
-        TLDFindRootCellUIItemModel(
-            title: I18n.of(navigatorKey.currentContext).rankLabel, imageAssest: 'assetss/images/icon_choose_rank.png',isPlusIcon: false),
       ])
     ];
   }

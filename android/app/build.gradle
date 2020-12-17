@@ -54,15 +54,15 @@ android {
         //     abiFilters 'armeabi', 'armeabi-v7a', 'armeabi-v8a'
         //     // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
         // }
-        applicationId "com.example.dragon_sword_purse"
+        applicationId "com.example.tld_aaa"
         minSdkVersion 18
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [
-        JPUSH_PKGNAME : "com.example.dragon_sword_purse",
-        JPUSH_APPKEY : "6676dc14cae09d6f15abe751", // NOTE: JPush 上注册的包名对应的 Appkey.
+        JPUSH_PKGNAME : "com.example.tld_aaa",
+        JPUSH_APPKEY : "3003807b24785e5d37bf681d", // NOTE: JPush 上注册的包名对应的 Appkey.
         JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
     ]
     }

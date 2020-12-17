@@ -7,11 +7,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
 class TLDAAAPersonCenterListCell extends StatefulWidget {
-  TLDAAAPersonCenterListCell({Key key,this.index,this.listModel}) : super(key: key);
+  TLDAAAPersonCenterListCell({Key key,this.index,this.listModel,this.didClickRecieveBtn,this.type}) : super(key: key);
+
+  final int type;
 
   final int index;
 
   final TLDAAAUpgradeListModel listModel;
+
+  final Function didClickRecieveBtn;
 
   @override
   _TLDAAAPersonCenterListCellState createState() => _TLDAAAPersonCenterListCellState();
@@ -84,36 +88,36 @@ class _TLDAAAPersonCenterListCellState extends State<TLDAAAPersonCenterListCell>
           Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(10)),
             child: _getBottomRowWidget(),
+          ),
+          Offstage(
+            offstage: widget.type == 1,
+            child: Padding(
+              padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
+              child: _getRevieveInfoWidget(),
+            ),
           )
         ],
       ),
     );
   }
 
-  Widget _getInfoWidget(){
-    String plusString = widget.listModel.isAdd ? '+' : '-';
+  Widget _getRevieveInfoWidget(){
     return Container(
             width: ScreenUtil.screenWidth - ScreenUtil().setWidth(140),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-              Row(
-                children : <Widget>[
-                   CachedNetworkImage(imageUrl: widget.listModel.curLevelIcon,width: ScreenUtil().setSp(58),height: ScreenUtil().setSp(58),),
-                   Padding(
-                    padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
-                    child : Icon(IconData(0xe632,fontFamily: 'appIconFonts'),color: Color.fromARGB(255, 102, 102, 102),size: ScreenUtil().setSp(24)),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
-                    child : CachedNetworkImage(imageUrl: widget.listModel.nextLevelIcon ,width: ScreenUtil().setSp(58),height: ScreenUtil().setSp(58),),
-                  ),
-                ]
-              ),
-             Text(plusString + '${widget.listModel.tldCount}TLD',style: TextStyle(fontSize: ScreenUtil().setSp(36),color: widget.listModel.isAdd ? Color.fromARGB(255, 65, 117, 5) : Color.fromARGB(255, 220, 59, 79))),
-            ],
-            ),
-    );
+             Text('可领取收益:' + '${widget.listModel.tldCount}TLD',style: TextStyle(fontSize: ScreenUtil().setSp(28),color: widget.listModel.isAdd ? Color.fromARGB(255, 65, 117, 5) : Color.fromARGB(255, 220, 59, 79))),
+             Container(
+               height: ScreenUtil().setHeight(60),
+               width: ScreenUtil().setWidth(150),
+               child: CupertinoButton(child: Text(widget.listModel.isReceive ? '已领取': '领取收益',style: TextStyle(color: Colors.white,fontSize: ScreenUtil().setSp(28)),),color: widget.listModel.isReceive ? Color.fromARGB(255, 153, 153, 153) :Theme.of(context).hintColor, padding: EdgeInsets.zero,onPressed: (){
+                 if ( !widget.listModel.isReceive){
+                   widget.didClickRecieveBtn();
+                 }
+               })),
+              ])
+            );
   }
 
 }

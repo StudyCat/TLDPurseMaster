@@ -17,7 +17,10 @@ class TLDAAAUpgradeListModel {
     this.nextLevelIcon,
     this.tldCount,
     this.createTime,
-    this.isAdd
+    this.isAdd,
+    this.upgradeLogId,
+    this.receiveCount,
+    this.isReceive
   });
 
   factory TLDAAAUpgradeListModel.fromJson(Map<String, dynamic> jsonRes) =>
@@ -30,7 +33,10 @@ class TLDAAAUpgradeListModel {
               nextLevelIcon: asT<String>(jsonRes['nextLevelIcon']),
               tldCount: asT<String>(jsonRes['tldCount']),
               createTime: asT<int>(jsonRes['createTime']),
-              isAdd:  asT<bool>(jsonRes['isAdd'])
+              isAdd:  asT<bool>(jsonRes['isAdd']),
+              upgradeLogId : asT<int>(jsonRes['upgradeLogId']),
+              receiveCount : asT<String>(jsonRes['receiveCount']),
+              isReceive :   asT<bool>(jsonRes['isReceive'])
             );
 
   String fromNickName;
@@ -40,6 +46,9 @@ class TLDAAAUpgradeListModel {
   String tldCount;
   int createTime;
   bool isAdd;
+  int upgradeLogId;
+  String receiveCount;
+  bool isReceive;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'fromNickName': fromNickName,
@@ -48,7 +57,10 @@ class TLDAAAUpgradeListModel {
         'nextLevelIcon': nextLevelIcon,
         'tldCount': tldCount,
         'createTime': createTime,
-        'isAdd' : isAdd
+        'isAdd' : isAdd,
+        'upgradeLogId' : upgradeLogId,
+        'receiveCount' : receiveCount,
+        'isReceive' : isReceive
       };
 
   @override
@@ -71,4 +83,15 @@ class TLDAAAPersonCenterListModelManager {
       success(result);
     }, (error) => failure(error));
   }
+
+
+  void getEarningWithId(int upgradeLogId, Function success, Function failure) {
+    TLDBaseRequest request = TLDBaseRequest(
+        {'upgradeLogId': upgradeLogId}, 'aaa/receiveUpgradeLevelProfit');
+    request.postNetRequest((value) {
+      success();
+    }, (error) => failure(error));
+
+  }
+
 }

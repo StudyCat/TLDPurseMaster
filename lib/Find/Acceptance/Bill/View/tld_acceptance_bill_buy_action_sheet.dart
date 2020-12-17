@@ -188,7 +188,7 @@ class _TLDAcceptanceBillBuyActionSheetState
 
   List<Widget> _getPaymentChoiceList(){
     List<Widget> result = [];
-    for(int i = 1 ; i < 3; i++){
+    for(int i = 1 ; i < 2; i++){
       result.add(_getPaymentSingleChoiceWidget(i));
     }
     return result;

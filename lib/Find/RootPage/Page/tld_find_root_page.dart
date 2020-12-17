@@ -85,16 +85,8 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
     TLDFindRootCellUIModel findRootCellUIModel = _iconDataSource.first;
     List newWebList = [];
     for (TLD3rdWebInfoModel item in webList) {
-        TLDFindRootCellUIItemModel uiItemModel = TLDFindRootCellUIItemModel(title: item.name,iconUrl: item.iconUrl,url: item.url,isNeedHideNavigation: item.isNeedHideNavigation,appType: item.appType);
-        if (uiItemModel.url == 'AAA'){
-           findRootCellUIModel.items.insert(2, uiItemModel);
-        }else if (uiItemModel.url == 'TLD_YLB'){
-          findRootCellUIModel.items.insert(2, uiItemModel);
-        }else if (uiItemModel.url == 'TLD_BILL'){
-          findRootCellUIModel.items.insert(0, uiItemModel);
-        }else{
+        TLDFindRootCellUIItemModel uiItemModel = TLDFindRootCellUIItemModel(title: item.name,iconUrl: item.iconUrl,url: item.url,isNeedHideNavigation: item.isNeedHideNavigation,appType: item.appType);  
           newWebList.add(uiItemModel);
-        }
     }
 
     setState(() {
@@ -284,21 +276,7 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
         }else{
           TLDFindRootCellUIModel uiModel = _iconDataSource[index - 1];
           return TLDFindRootPageCell(uiModel: uiModel,didClickItemCallBack: (TLDFindRootCellUIItemModel itemModel){
-            if (itemModel.title == I18n.of(context).missionLabel && itemModel.url.length == 0){
-              _isOpenMission();
-            }else if (itemModel.title == I18n.of(context).tldRedEnvelope && itemModel.url.length == 0){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRedEnvelopePage()));
-            }else if (itemModel.title == I18n.of(context).recieveRedEnvelope&& itemModel.url.length == 0){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRecieveRedEnvelopePage()));
-            }else if (itemModel.title == I18n.of(context).rankLabel && itemModel.url.length == 0){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRankTabPage()));
-            }else if (itemModel.title == I18n.of(context).game && itemModel.url.length == 0){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDGamePage()));
-            }else if (itemModel.title == I18n.of(context).promotion && itemModel.url.length == 0){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPromotionPage()));
-            }else if (itemModel.title.length == 0 && itemModel.url.length == 0){
-              _scanPhoto();
-            }else if (itemModel.url.length > 0){
+            if (itemModel.url.length > 0){
               if (itemModel.url == 'AAA'){
                 _isHaveAAAUserInfo();
               }else if (itemModel.url == 'CASH'){
@@ -309,6 +287,18 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TLDYLBTabPage()));
               }else if (itemModel.url == 'TLD_BILL'){
                 _isHaveAcceptanceUser();
+              }else if(itemModel.url == 'INVITE'){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDPromotionPage()));
+              }else if(itemModel.url == 'GAME'){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDGamePage()));
+              }else if(itemModel.url == 'RED_ENVELOPE'){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRedEnvelopePage()));
+              }else if(itemModel.url == 'RANK'){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRankTabPage()));
+              }else if (itemModel.url == 'RED_ENVELOPE_RECODE'){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> TLDRecieveRedEnvelopePage()));
+              }else if (itemModel.url == 'MISSION'){
+                _isOpenMission();
               }else{
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLD3rdPartWebPage(urlStr: itemModel.url,isNeedHideNavigation: itemModel.isNeedHideNavigation,)));
               }

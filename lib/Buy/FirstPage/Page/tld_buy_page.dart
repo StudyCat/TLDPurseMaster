@@ -241,6 +241,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
       body: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget(size.width)),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
+        actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
         border: Border.all(
           color : Color.fromARGB(0, 0, 0, 0),
         ),
@@ -248,20 +249,7 @@ class _TLDBuyPageState extends State<TLDBuyPage> with AutomaticKeepAliveClientMi
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         transitionBetweenRoutes: false,
         middle: Text(I18n.of(context).commonPageTitle),
-        leading: Builder(builder: (BuildContext context) {
-          return CupertinoButton(
-              child: Icon(
-                IconData(0xe608, fontFamily: 'appIconFonts'),
-                color: Color.fromARGB(255, 51, 51, 51),
-              ),
-              padding: EdgeInsets.all(0),
-              minSize: 20,
-              onPressed: () {
-                _focusNode.unfocus();
-                TLDMoreBtnClickNotification().dispatch(context);
-              });
-        }),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         trailing: Container(
           width : ScreenUtil().setWidth(160),
           child: Row(

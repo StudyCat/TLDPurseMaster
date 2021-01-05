@@ -8,6 +8,8 @@ import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_friend_team_open_cell.d
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_friend_team_unopen_cell.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_friend_team_unupgrade_cell.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_upgrade_action_sheet.dart';
+import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -124,6 +126,10 @@ class _TLDAAAFriendTeamPageState extends State<TLDAAAFriendTeamPage> {
         middle: Text('AAA'),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
+        trailing: MessageButton(
+              didClickCallBack: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => TLDMessagePage())),
+            ),
       ),
       body: LoadingOverlay(isLoading: _isLoading, child: SmartRefresher(
         controller: _refreshController,

@@ -69,6 +69,7 @@ class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProvid
       body: _getBodyWidget(),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
+        actionsForegroundColor: Color.fromARGB(255, 51, 51, 51),
         backgroundColor: Color.fromARGB(255, 242, 242, 242),
         border: Border.all(
           color: Color.fromARGB(0, 0, 0, 0),
@@ -76,19 +77,7 @@ class _TLDTabSalePageState extends State<TLDTabSalePage> with SingleTickerProvid
         heroTag: 'sale_page',
         transitionBetweenRoutes: false,
         middle: Text(I18n.of(context).commonPageTitle),
-        leading: Builder(builder: (BuildContext context) {
-          return CupertinoButton(
-              child: Icon(
-                IconData(0xe608, fontFamily: 'appIconFonts'),
-                color: Color.fromARGB(255, 51, 51, 51),
-              ),
-              padding: EdgeInsets.all(0),
-              minSize: 20,
-              onPressed: () {
-                TLDMoreBtnClickNotification().dispatch(context);
-              });
-        }),
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         trailing: Container(
             width: ScreenUtil().setWidth(160),
             child: Row(

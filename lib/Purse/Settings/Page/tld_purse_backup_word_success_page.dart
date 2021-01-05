@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_tabbar_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -85,7 +86,7 @@ class _TLDPurseBackupWordSuccessPageState
               height : ScreenUtil().setHeight(80),
               width :  ScreenUtil().setWidth(540),
               child: CupertinoButton(child: Text('完成',style : TextStyle(fontSize : ScreenUtil().setSp(28),color: Colors.white)), padding: EdgeInsets.all(0),color: Theme.of(context).primaryColor, borderRadius: BorderRadius.all(Radius.circular(4)),onPressed: (){
-               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TLDTabbarPage()), (route) => route == null);
+               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => TLDAAATabbarPage()), (route) => route == null);
               }),
             ),
           ),

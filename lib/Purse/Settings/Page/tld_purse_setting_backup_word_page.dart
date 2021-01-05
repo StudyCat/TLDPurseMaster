@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_tabbar_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
@@ -120,7 +121,7 @@ class _TLDPurseSeetingBackWordPageState extends State<TLDPurseSeetingBackWordPag
               if (widget.type == TLDBackWordType.create) {
                 Uint8List data = await _capturePng();
                 await _saveQrCodeImage(data);
-                Widget nextPage = _isLogin ? TLDTabbarPage() : TLDRegisterView();
+                Widget nextPage = _isLogin ? TLDAAATabbarPage() : TLDRegisterView();
                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => nextPage), (route) => route == null);
               }else{
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TLDVerifyWordPage(words: _words,type: widget.type,verifySuccessCallBack: widget.verifySuccessCallBack,)));

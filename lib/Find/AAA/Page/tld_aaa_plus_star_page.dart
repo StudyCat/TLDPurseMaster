@@ -3,6 +3,8 @@ import 'package:dragon_sword_purse/Find/AAA/Model/tld_aaa_plus_star_model_manage
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_plus_star_action_sheet.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_plus_star_cell.dart';
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_plus_star_notice_cell.dart';
+import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +82,10 @@ class _TLDAAAPlusStarPageState extends State<TLDAAAPlusStarPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CupertinoNavigationBar(
+        trailing: MessageButton(
+              didClickCallBack: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => TLDMessagePage())),
+            ),
         border: Border.all(
           color: Color.fromARGB(0, 0, 0, 0),
         ),

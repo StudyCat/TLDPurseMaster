@@ -12,7 +12,9 @@ import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_person_center_header_vi
 import 'package:dragon_sword_purse/Find/AAA/View/tld_aaa_upgrade_action_sheet.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Sign/Page/tld_acceptance_sign_son_page.dart';
 import 'package:dragon_sword_purse/Find/YLB/Model/tld_ylb_choose_type_model_manager.dart';
+import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/CreatePurse/Page/tld_create_purse_page.dart';
 import 'package:dragon_sword_purse/eventBus/tld_envent_bus.dart';
 import 'package:flutter/cupertino.dart';
@@ -21,7 +23,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
-
 class TLDAAAPersonCenterPage extends StatefulWidget {
   TLDAAAPersonCenterPage({Key key}) : super(key: key);
 
@@ -29,13 +30,13 @@ class TLDAAAPersonCenterPage extends StatefulWidget {
   _TLDAAAPersonCenterPageState createState() => _TLDAAAPersonCenterPageState();
 }
 
-class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with SingleTickerProviderStateMixin {
-
+class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage>
+    with SingleTickerProviderStateMixin {
   bool _isLoading = false;
 
   TabController _tabController;
 
-  List _tabTitles = ['好友发起','我的发起'];
+  List _tabTitles = ['好友发起', '我的发起'];
 
   TLDAAAPersonFriendCenterModelManager _modelManager;
 
@@ -54,19 +55,19 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
     _getFutureProfit();
   }
 
-  void _getUserInfo(){
+  void _getUserInfo() {
     setState(() {
       _isLoading = true;
     });
-    _modelManager.getUserInfo((TLDAAAUserInfo userInfo){
-      if (mounted){
+    _modelManager.getUserInfo((TLDAAAUserInfo userInfo) {
+      if (mounted) {
         setState(() {
           _isLoading = false;
           _userInfo = userInfo;
         });
       }
-    }, (TLDError error){
-      if (mounted){
+    }, (TLDError error) {
+      if (mounted) {
         setState(() {
           _isLoading = false;
         });
@@ -75,36 +76,37 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
     });
   }
 
-  void _getFutureProfit(){
-    _modelManager.getFutureProfit((String profit){
+  void _getFutureProfit() {
+    _modelManager.getFutureProfit((String profit) {
       setState(() {
         _futureProfit = profit;
       });
-    }, (TLDError error){
-
-    });
+    }, (TLDError error) {});
   }
 
-  void _getUpgradeInfo(){
-        setState(() {
+  void _getUpgradeInfo() {
+    setState(() {
       _isLoading = true;
     });
-    _modelManager.getUpgradeInfo((TLDAAAUpgradeInfoModel upgradeInfoModel){
-       if (mounted){
+    _modelManager.getUpgradeInfo((TLDAAAUpgradeInfoModel upgradeInfoModel) {
+      if (mounted) {
         setState(() {
           _isLoading = false;
         });
       }
-      showModalBottomSheet(context: context, builder: (context){
-        return TLDAAAUpgradeActionSheet(
-          upgradeInfoModel: upgradeInfoModel,
-          didClickUpgrade: (int type,String walletAddress,int paymentType,int ylbType){
-            _upgrade(type, walletAddress,paymentType,ylbType);
-          },
-        );
-      });
-    }, (TLDError error){
-      if (mounted){
+      showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return TLDAAAUpgradeActionSheet(
+              upgradeInfoModel: upgradeInfoModel,
+              didClickUpgrade: (int type, String walletAddress, int paymentType,
+                  int ylbType) {
+                _upgrade(type, walletAddress, paymentType, ylbType);
+              },
+            );
+          });
+    }, (TLDError error) {
+      if (mounted) {
         setState(() {
           _isLoading = false;
         });
@@ -113,23 +115,28 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
     });
   }
 
-  void _upgrade(int type,String walletAddress,int paymentType,int ylbType){
-      setState(() {
+  void _upgrade(int type, String walletAddress, int paymentType, int ylbType) {
+    setState(() {
       _isLoading = true;
     });
-    _modelManager.upgrade(type, walletAddress, paymentType,ylbType,(){
-      if (mounted){
+    _modelManager.upgrade(type, walletAddress, paymentType, ylbType, () {
+      if (mounted) {
         setState(() {
           _isLoading = false;
         });
       }
-      showDialog(context: context,builder : (context) => TLDAlertView(type:TLDAlertViewType.normal,title: '提示',alertString: '升级成功',didClickSureBtn: (){
-
-      },));
+      showDialog(
+          context: context,
+          builder: (context) => TLDAlertView(
+                type: TLDAlertViewType.normal,
+                title: '提示',
+                alertString: '升级成功',
+                didClickSureBtn: () {},
+              ));
       _getUserInfo();
       eventBus.fire(TLDAAAUpgradeListRefreshEvent());
-    }, (TLDError error){
-      if (mounted){
+    }, (TLDError error) {
+      if (mounted) {
         setState(() {
           _isLoading = false;
         });
@@ -138,22 +145,27 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
     });
   }
 
-  void _recieve(String walletAddress){
-     setState(() {
+  void _recieve(String walletAddress) {
+    setState(() {
       _isLoading = true;
     });
-    _modelManager.recieve(walletAddress,(){
-      if (mounted){
+    _modelManager.recieve(walletAddress, () {
+      if (mounted) {
         setState(() {
           _isLoading = false;
         });
       }
-      showDialog(context: context,builder : (context) => TLDAlertView(type:TLDAlertViewType.normal,title: '提示',alertString: '已领取TLD到钱包内',didClickSureBtn: (){
-
-      },));
+      showDialog(
+          context: context,
+          builder: (context) => TLDAlertView(
+                type: TLDAlertViewType.normal,
+                title: '提示',
+                alertString: '已领取TLD到钱包内',
+                didClickSureBtn: () {},
+              ));
       _getUserInfo();
-    }, (TLDError error){
-      if (mounted){
+    }, (TLDError error) {
+      if (mounted) {
         setState(() {
           _isLoading = false;
         });
@@ -164,49 +176,59 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: LoadingOverlay(isLoading:_isLoading, child:  NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[_getAppBar()];
-          },
-          body: _getBodyWidget()
-          )),
+    return Scaffold(
+      body: LoadingOverlay(
+          isLoading: _isLoading,
+          child: NestedScrollView(
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[_getAppBar()];
+              },
+              body: _getBodyWidget())),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
     );
   }
 
-  Widget _getAppBar(){
+  Widget _getAppBar() {
     return SliverAppBar(
       centerTitle: true,
       expandedHeight: ScreenUtil().setHeight(870),
       backgroundColor: Theme.of(context).primaryColor,
       actions: <Widget>[
-        IconButton(icon: Icon(IconData(0xe80a,fontFamily : 'appIconFonts')), onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => TLDAAAChangeUserInfoPage(),)).then((value) => _getUserInfo());
-        }),
+        IconButton(
+            icon: Icon(IconData(0xe80a, fontFamily: 'appIconFonts')),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TLDAAAChangeUserInfoPage(),
+                  )).then((value) => _getUserInfo());
+            }),
         Padding(
-          padding: EdgeInsets.only(right : ScreenUtil().setWidth(30)),
-          child:  IconButton(icon: Icon(IconData(0xe614,fontFamily : 'appIconFonts'),color: Colors.white,), onPressed: (){
-          Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.aaaUrl,title: 'AAA说明',)));
-        }),
-        ),
+            padding: EdgeInsets.only(right: ScreenUtil().setWidth(30)),
+            child: MessageButton(
+              color: Colors.white,
+              didClickCallBack: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => TLDMessagePage())),
+            )),
       ],
       leading: Container(
         height: ScreenUtil().setHeight(34),
         width: ScreenUtil().setHeight(34),
-        child: CupertinoButton(
-          child: Icon(
-            IconData(
-              0xe600,
-              fontFamily: 'appIconFonts',
+        child: IconButton(
+            icon: Icon(
+              IconData(0xe614, fontFamily: 'appIconFonts'),
+              color: Colors.white,
             ),
-            color: Colors.white,
-          ),
-          padding: EdgeInsets.all(0),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => TLDWebPage(
+                            type: TLDWebPageType.aaaUrl,
+                            title: 'AAA说明',
+                          )));
+            }),
       ),
       floating: true, //不随着滑动隐藏标题
       pinned: true, //不固定在顶部
@@ -215,81 +237,105 @@ class _TLDAAAPersonCenterPageState extends State<TLDAAAPersonCenterPage> with Si
         background: TLDAAAPersonCenterHeaderView(
           userInfo: _userInfo,
           futureProfit: _futureProfit,
-          didClickWithdrawCallBack: (){
-            Navigator.push(context, MaterialPageRoute(
-              builder : (context) => TLDEchangeChooseWalletPage(didChooseWalletCallBack: (TLDWalletInfoModel walletInfoModel){
-                jugeHavePassword(context, (){
-                  _recieve(walletInfoModel.walletAddress);
-                }, TLDCreatePursePageType.back, (){
-                  _recieve(walletInfoModel.walletAddress);
-                });
-              },)));
+          didClickWithdrawCallBack: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TLDEchangeChooseWalletPage(
+                          didChooseWalletCallBack:
+                              (TLDWalletInfoModel walletInfoModel) {
+                            jugeHavePassword(
+                                context,
+                                () {
+                                  _recieve(walletInfoModel.walletAddress);
+                                },
+                                TLDCreatePursePageType.back,
+                                () {
+                                  _recieve(walletInfoModel.walletAddress);
+                                });
+                          },
+                        )));
           },
-          didClickUpgradeButtonCallBack: (){
-           _getUpgradeInfo();
+          didClickUpgradeButtonCallBack: () {
+            _getUpgradeInfo();
           },
-          didClickSignButton: (){
-            Navigator.push(context, MaterialPageRoute(
-              builder: (context) => TLDAcceptanceSignSonPage(userInfo: _userInfo,),
-            )).then((value) => _getUserInfo());
+          didClickSignButton: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TLDAcceptanceSignSonPage(
+                    userInfo: _userInfo,
+                  ),
+                )).then((value) => _getUserInfo());
           },
         ),
       ),
       bottom: _getAppBarBottom(),
-        );
-  }
-  
-  Widget _getAppBarBottom(){
-    return PreferredSize(
-        preferredSize: Size.fromHeight(ScreenUtil().setHeight(110)),
-        child: Container(
-          color: Color.fromARGB(255, 242, 242, 242),
-          child:  Stack(
-      children: <Widget>[
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: ScreenUtil().setHeight(40),
-          color: Theme.of(context).primaryColor,
-        ),
-        Padding(
-          padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right : ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(20)),
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius : BorderRadius.all(Radius.circular(4)),
-              color : Color.fromARGB(255, 242, 242, 242),
-            ),
-            height: ScreenUtil().setHeight(90),
-            child: TabBar(
-            tabs: _tabTitles.map((title) {
-              return Tab(text: title);
-            }).toList(),
-            labelStyle: TextStyle(
-                fontSize: ScreenUtil().setSp(32), fontWeight: FontWeight.bold),
-            unselectedLabelStyle: TextStyle(fontSize: ScreenUtil().setSp(24)),
-            indicatorColor: Theme.of(context).hintColor,
-            labelColor: Color.fromARGB(255, 51, 51, 51),
-            unselectedLabelColor: Color.fromARGB(255, 153, 153, 153),
-            controller: _tabController,
-            indicatorSize: TabBarIndicatorSize.label,
-          ),
-          ),
-        )
-      ],
-    ),
-        ),
     );
   }
 
-  Widget  _getBodyWidget(){
+  Widget _getAppBarBottom() {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(ScreenUtil().setHeight(110)),
+      child: Container(
+        color: Color.fromARGB(255, 242, 242, 242),
+        child: Stack(
+          children: <Widget>[
+            Container(
+              width: MediaQuery.of(context).size.width,
+              height: ScreenUtil().setHeight(40),
+              color: Theme.of(context).primaryColor,
+            ),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: ScreenUtil().setWidth(30),
+                  right: ScreenUtil().setWidth(30),
+                  top: ScreenUtil().setHeight(20)),
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(4)),
+                  color: Color.fromARGB(255, 242, 242, 242),
+                ),
+                height: ScreenUtil().setHeight(90),
+                child: TabBar(
+                  tabs: _tabTitles.map((title) {
+                    return Tab(text: title);
+                  }).toList(),
+                  labelStyle: TextStyle(
+                      fontSize: ScreenUtil().setSp(32),
+                      fontWeight: FontWeight.bold),
+                  unselectedLabelStyle:
+                      TextStyle(fontSize: ScreenUtil().setSp(24)),
+                  indicatorColor: Theme.of(context).hintColor,
+                  labelColor: Color.fromARGB(255, 51, 51, 51),
+                  unselectedLabelColor: Color.fromARGB(255, 153, 153, 153),
+                  controller: _tabController,
+                  indicatorSize: TabBarIndicatorSize.label,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _getBodyWidget() {
     return TabBarView(
       children: [
-      SafeArea(child: TLDAAAPersonCenterListPage(type: 2,refreshCallBack: (){
-        _getUserInfo();
-      },)),
-      SafeArea(child: TLDAAAPersonCenterListPage(type: 1,))
-    ],
-    controller:  _tabController,
+        SafeArea(
+            child: TLDAAAPersonCenterListPage(
+          type: 2,
+          refreshCallBack: () {
+            _getUserInfo();
+          },
+        )),
+        SafeArea(
+            child: TLDAAAPersonCenterListPage(
+          type: 1,
+        ))
+      ],
+      controller: _tabController,
     );
   }
-
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_tabbar_page.dart';
 import 'package:dragon_sword_purse/ceatePurse&importPurse/ImportPurse/Page/tld_import_purse_success_page.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
@@ -177,7 +178,7 @@ class _TLDCreatingPursePageState extends State<TLDCreatingPursePage> {
     } else {
       Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => TLDTabbarPage()),
+          MaterialPageRoute(builder: (context) => TLDAAATabbarPage()),
           (route) => route == null);
     }
   }

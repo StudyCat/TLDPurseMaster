@@ -1,5 +1,6 @@
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_tabbar_page.dart';
 import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/register&login/Model/tld_register_model_manager.dart';
@@ -58,7 +59,7 @@ class _TLDRegisterInviteCodePageState extends State<TLDRegisterInviteCodePage> {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.setString('acceptanceToken', token);
       if (TLDDataManager.instance.purseList.length > 0){
-        Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => TLDTabbarPage()), (route) => route == null);
+        Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => TLDAAATabbarPage()), (route) => route == null);
       }else{
         Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => TLDNotPurseHomePage()), (route) => route == null);
       }

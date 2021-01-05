@@ -156,7 +156,7 @@ class TLDBaseRequest{
     }
   }
 
-  Future<String> _encryptPramater() async {
+  Future<String> _encryptPramater() async { 
     String pramaterJson = jsonEncode(this.pramatersMap);
 
     

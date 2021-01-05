@@ -26,14 +26,12 @@ class _TLDAAAChangeUserInfoPageState extends State<TLDAAAChangeUserInfoPage> {
 
   List titles = [
     '昵称',
-    '手机号',
     '微信账号',
     '收款钱包'
   ];
 
   List placeholders = [
     '请输入昵称',
-    '请输入手机号',
     '请输入微信账号',
     '请选择钱包',
   ];
@@ -80,10 +78,6 @@ class _TLDAAAChangeUserInfoPageState extends State<TLDAAAChangeUserInfoPage> {
   void _saveUserInfo(){
     if (_userInfo.nickName == null){
       Fluttertoast.showToast(msg: '请填写昵称');
-      return;
-    }
-    if (_userInfo.tel == null){
-      Fluttertoast.showToast(msg: '请填写手机号');
       return;
     }
     if (_userInfo.wechat == null){
@@ -141,12 +135,10 @@ class _TLDAAAChangeUserInfoPageState extends State<TLDAAAChangeUserInfoPage> {
     return ListView.builder(
       itemCount: titles.length + 1,
       itemBuilder: (BuildContext context, int index){
-        if (index < 3) {
+        if (index < 2) {
           String content;
           if (index == 0){
             content = _userInfo.nickName != null ? _userInfo.nickName : '';
-          }else if(index == 1){
-            content = _userInfo.tel != null ? _userInfo.tel : '';
           }else{
             content = _userInfo.wechat != null ? _userInfo.wechat : '';
           }
@@ -162,7 +154,7 @@ class _TLDAAAChangeUserInfoPageState extends State<TLDAAAChangeUserInfoPage> {
            }
         },),
         );
-        }else if( index == 3){
+        }else if( index == 2){
           String content = _userInfo.walletAddress != null ? _userInfo.walletAddress : placeholders[index];
           return Padding(
             padding:  EdgeInsets.only(top:ScreenUtil().setHeight(2),left: ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30)),

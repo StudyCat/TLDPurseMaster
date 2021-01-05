@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_tabbar_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class _TLDDeletePurseSuccessPageState extends State<TLDDeletePurseSuccessPage> {
               } else {
                 Navigator.pushAndRemoveUntil(
                     context,
-                    MaterialPageRoute(builder: (context) => TLDTabbarPage()),
+                    MaterialPageRoute(builder: (context) => TLDAAATabbarPage()),
                     (route) => route == null);
               }
             },
@@ -110,7 +111,7 @@ class _TLDDeletePurseSuccessPageState extends State<TLDDeletePurseSuccessPage> {
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => TLDTabbarPage()),
+                              builder: (context) => TLDAAATabbarPage()),
                           (route) => route == null);
                     }
                   }),

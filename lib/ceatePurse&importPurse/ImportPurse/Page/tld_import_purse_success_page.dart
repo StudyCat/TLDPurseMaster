@@ -1,4 +1,5 @@
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
+import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_tabbar_page.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/register&login/Page/tld_register_page.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -52,7 +53,7 @@ class _TLDImportPurseSuccessPageState extends State<TLDImportPurseSuccessPage> {
           ),
           padding: EdgeInsets.all(0),
           onPressed: () {
-            Widget nextPage = _isLogin ? TLDTabbarPage() : TLDRegisterView();
+            Widget nextPage = _isLogin ? TLDAAATabbarPage() : TLDRegisterView();
             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => nextPage), (route) => route == null);
           },
         ),
@@ -104,7 +105,7 @@ class _TLDImportPurseSuccessPageState extends State<TLDImportPurseSuccessPage> {
               padding: EdgeInsets.all(0),
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                Widget nextPage = _isLogin ? TLDTabbarPage() : TLDRegisterView();
+                Widget nextPage = _isLogin ? TLDAAATabbarPage() : TLDRegisterView();
                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => nextPage), (route) => route == null);
               }),
         ),

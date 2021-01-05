@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
+import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_tabbar_page.dart';
 import 'package:dragon_sword_purse/register&login/Page/tld_register_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -124,7 +125,7 @@ class _TLDHomePageState extends State<TLDHomePage> {
     ScreenUtil.init(context, width: 750, height: 1334);
       if (isHavePurse){
         if (_isLogin){
-          return TLDTabbarPage();
+          return TLDAAATabbarPage();
         }else{
           return TLDRegisterView();
         } 

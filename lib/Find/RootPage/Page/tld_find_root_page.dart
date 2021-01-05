@@ -1,9 +1,14 @@
 import 'dart:convert';
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Buy/FirstPage/Page/tld_buy_page.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_alert_view.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_web_page.dart';
+import 'package:dragon_sword_purse/Drawer/AboutUs/Page/tld_about_us_page.dart';
+import 'package:dragon_sword_purse/Drawer/IntegrationDesc/Page/tld_integration_desc_page.dart';
+import 'package:dragon_sword_purse/Drawer/PaymentTerm/Page/tld_payment_choose_wallet.dart';
+import 'package:dragon_sword_purse/Drawer/UserFeedback/Page/tld_user_feedback_page.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/3rdPartWeb/Page/tld_3rdpart_web_page.dart';
 import 'package:dragon_sword_purse/Find/AAA/Page/tld_aaa_change_user_info_page.dart';
@@ -25,12 +30,17 @@ import 'package:dragon_sword_purse/Find/RootPage/Page/tld_bill_Repaying_page.dar
 import 'package:dragon_sword_purse/Find/RootPage/Page/tld_game_page.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_ad_banner_view.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_page_cell.dart';
+import 'package:dragon_sword_purse/Find/RootPage/View/tp_new_find_root_page_other_action_cell.dart';
+import 'package:dragon_sword_purse/Find/Transfer/Page/tld_new_transfer_page.dart';
 import 'package:dragon_sword_purse/Find/YLB/Page/tld_ylb_tab_page.dart';
 import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
 import 'package:dragon_sword_purse/NewMission/FirstPage/Page/tld_new_mission_first_page.dart';
 import 'package:dragon_sword_purse/Notification/tld_more_btn_click_notification.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_order_list_page.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Page/tld_purse_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
+import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_sale_page.dart';
+import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_tab_sale_page.dart';
 import 'package:dragon_sword_purse/ScanQRCode/tld_scan_qrcode_page.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
@@ -267,13 +277,13 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
 
   Widget _getBodyWidget(){
     return ListView.builder(
-      itemCount: _iconDataSource.length + 1,
+      itemCount: 3,
       itemBuilder: (context,index){
         if (index == 0){
           return TLDFindRootADBannerView(bannerList: _bannerList,didClickBannerViewCallBack: (TLDBannerModel bannerModel){
               Navigator.push(context, MaterialPageRoute(builder: (context)=> TLD3rdPartWebPage(isNeedHideNavigation: !bannerModel.isNeedNavigation,urlStr: bannerModel.bannerHref,)));
           },);
-        }else{
+        }else if (index  == 1){
           TLDFindRootCellUIModel uiModel = _iconDataSource[index - 1];
           return TLDFindRootPageCell(uiModel: uiModel,didClickItemCallBack: (TLDFindRootCellUIItemModel itemModel){
             if (itemModel.url.length > 0){
@@ -302,6 +312,36 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
               }else{
                 Navigator.push(context, MaterialPageRoute(builder: (context)=> TLD3rdPartWebPage(urlStr: itemModel.url,isNeedHideNavigation: itemModel.isNeedHideNavigation,)));
               }
+            }else {
+              if (itemModel.isPlusIcon == true) {
+                      _scanPhoto();
+                    } else {
+                      if (itemModel.title == '钱包') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TLDPursePage(
+                                  )));
+                      } else if (itemModel.title == '购买') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TLDBuyPage(
+                                  )));
+                      } else if (itemModel.title == '出售') {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TLDTabSalePage(
+                                  )));
+                      }else if (itemModel.title == '划转'){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TLDNewTransferPage(
+                                  )));
+                      }
+                    }
             }
           },
           didLongClickItemCallBack: (TLDFindRootCellUIItemModel itemModel){
@@ -323,6 +363,31 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
           didClickQuestionItem: (){
             Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.playDescUrl,title: '玩法说明',)));
           },
+          );
+        }else {
+          return TPNewFindRootPageOtherActionCell(
+            didClickItemCallBack: (int index){
+               if (index == 0) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TLDPaymentChooseWalletPage()));
+          } else if (index == 1) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TLDIntegrationDescPage()));
+          } else if (index == 3) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TLDAboutUsPage()));
+          } else if (index == 2) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TLDUserFeedBackPage()));
+          }else {
+            // TPUserAgreementPage
+            Navigator.push(context, MaterialPageRoute(builder : (context) => TLDWebPage(type: TLDWebPageType.tldWalletAgreement,title: I18n.of(context).userAgreement,)));
+          }
+            } ,
           );
         }
       });

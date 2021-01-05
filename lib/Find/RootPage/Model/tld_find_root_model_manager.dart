@@ -100,7 +100,11 @@ class TLDFindRootCellUIItemModel {
 class TLDFindRootModelManager {
   static List get uiModelList {
     return [
-      TLDFindRootCellUIModel(title: I18n.of(navigatorKey.currentContext).playingMethodLabel, isHaveNotice: true, items: [
+      TLDFindRootCellUIModel(title: '功能', isHaveNotice: true, items: [
+        TLDFindRootCellUIItemModel(title: '钱包', imageAssest: 'assetss/images/game_icon.png',isPlusIcon: false),
+        TLDFindRootCellUIItemModel(title: '购买', imageAssest: 'assetss/images/game_icon.png',isPlusIcon: false),
+        TLDFindRootCellUIItemModel(title: '出售', imageAssest: 'assetss/images/game_icon.png',isPlusIcon: false),
+        TLDFindRootCellUIItemModel(title: '划转', imageAssest: 'assetss/images/game_icon.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true),
       ])
     ];

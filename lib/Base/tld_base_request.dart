@@ -32,7 +32,7 @@ class TLDBaseRequest{
   //139.224.83.9:8030 生成环境
   //18.166.113.166:8030  新生产环境 
 
-  static String baseUrl = 'http://192.168.1.120:8031/';
+  static String baseUrl = 'http://120.92.141.131:8031/';
   Map pramatersMap;
   String subUrl;
   CancelToken cancelToken;

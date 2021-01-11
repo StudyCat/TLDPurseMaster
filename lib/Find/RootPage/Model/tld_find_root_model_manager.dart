@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_data_manager.dart';
 import 'package:dragon_sword_purse/dataBase/tld_database_manager.dart';
@@ -101,10 +103,10 @@ class TLDFindRootModelManager {
   static List get uiModelList {
     return [
       TLDFindRootCellUIModel(title: '功能', isHaveNotice: true, items: [
-        TLDFindRootCellUIItemModel(title: '钱包', imageAssest: 'assetss/images/game_icon.png',isPlusIcon: false),
-        TLDFindRootCellUIItemModel(title: '购买', imageAssest: 'assetss/images/game_icon.png',isPlusIcon: false),
-        TLDFindRootCellUIItemModel(title: '出售', imageAssest: 'assetss/images/game_icon.png',isPlusIcon: false),
-        TLDFindRootCellUIItemModel(title: '划转', imageAssest: 'assetss/images/game_icon.png',isPlusIcon: false),
+        TLDFindRootCellUIItemModel(title: '钱包', imageAssest: 'assetss/images/find_wallet_icon.png',isPlusIcon: false),
+        TLDFindRootCellUIItemModel(title: '购买', imageAssest: 'assetss/images/find_buy_icon.png',isPlusIcon: false),
+        TLDFindRootCellUIItemModel(title: '出售', imageAssest: 'assetss/images/find_sale_icon.png',isPlusIcon: false),
+        TLDFindRootCellUIItemModel(title: '划转', imageAssest: 'assetss/images/find_transfer_icon.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true),
       ])
     ];
@@ -240,6 +242,20 @@ class TLDFindRootModelManager {
       }
       success(needBinding);
     }, (error) => failure(error));
+  }
+
+    void getAllAmount(Function(String) success,Function(TLDError) failure){
+      List purseList = TLDDataManager.instance.purseList;
+      List addressList = [];
+      for (TLDWallet item in purseList) {
+        addressList.add(item.address);
+      }
+      String addressListJson = jsonEncode(addressList);
+      TLDBaseRequest request = TLDBaseRequest({"list":addressListJson}, 'wallet/queryAccountTotal');
+      request.postNetRequest((value) {
+        Map data = value;
+        success(data['total']);
+      }, (error) => failure(error));
   }
 
 

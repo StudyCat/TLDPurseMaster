@@ -97,6 +97,7 @@ class _TLDAAAPersonCenterListPageState extends State<TLDAAAPersonCenterListPage>
         });
       }
       Fluttertoast.showToast(msg: '领取成功');
+      _refreshController.requestRefresh();
       widget.refreshCallBack();
     }, (TLDError error){
       if (mounted){

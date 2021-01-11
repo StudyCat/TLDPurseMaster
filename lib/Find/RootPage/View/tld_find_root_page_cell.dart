@@ -44,13 +44,6 @@ class _TLDFindRootPageCellState extends State<TLDFindRootPageCell> {
                 children :<Widget>[
                   RichText(
                 text: TextSpan(children: <InlineSpan>[
-                  WidgetSpan(
-                    child: Container(
-                      color: Theme.of(context).hintColor,
-                      height: ScreenUtil().setHeight(28),
-                      width: ScreenUtil().setWidth(6),
-                    ),
-                  ),
                   TextSpan(
                       text: ' ' + widget.uiModel.title,
                       style: TextStyle(
@@ -66,6 +59,14 @@ class _TLDFindRootPageCellState extends State<TLDFindRootPageCell> {
               })
               )
                 ]
+              ),
+              Padding(
+                padding: EdgeInsets.only(top : ScreenUtil().setHeight(4)),
+                child: Divider(
+                  height: ScreenUtil().setHeight(3),
+                  endIndent: 0,
+                  indent: 0,
+                ),
               ),
               Container(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),

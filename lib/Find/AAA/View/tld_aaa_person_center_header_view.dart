@@ -29,7 +29,7 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
   Widget build(BuildContext context) {
     return Container(
        color: Theme.of(context).primaryColor,
-       padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30),top: ScreenUtil().setHeight(168),bottom: ScreenUtil().setHeight(20)),
+       padding: EdgeInsets.only(left : ScreenUtil().setWidth(30),right: ScreenUtil().setWidth(30),top: kToolbarHeight + ScreenUtil().setHeight(20) + ScreenUtil.statusBarHeight,bottom: ScreenUtil().setHeight(20)),
        child: Column(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: <Widget>[
@@ -103,11 +103,7 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
       padding: EdgeInsets.only(top : ScreenUtil().setHeight(14)),
       child: Row(
         children: <Widget>[
-          _getProfitWidget('预计收益', widget.futureProfit.length > 0 ?'${widget.futureProfit}TLD' : '计算中'),
-          Padding(
-            padding: EdgeInsets.only(left :ScreenUtil().setWidth(20)),
-            child :  _getProfitWidget('总收益', widget.userInfo!= null ? widget.userInfo.totalProfit + 'TLD' : '0TLD')
-            )
+            _getProfitWidget('总收益', widget.userInfo!= null ? widget.userInfo.totalProfit + 'TLD' : '0TLD')
         ],
       ), 
       );
@@ -116,7 +112,7 @@ class _TLDAAAPersonCenterHeaderViewState extends State<TLDAAAPersonCenterHeaderV
   Widget _getProfitWidget(String title,String content){
     return Container(
       height : ScreenUtil().setHeight(110),
-      width: (MediaQuery.of(context).size.width - ScreenUtil().setWidth(80)) / 2,
+      width: (MediaQuery.of(context).size.width - ScreenUtil().setWidth(60)),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(40)),
         color: Color.fromARGB(255, 82, 82, 82),

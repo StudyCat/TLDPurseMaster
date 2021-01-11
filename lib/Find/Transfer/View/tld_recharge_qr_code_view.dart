@@ -1,34 +1,30 @@
 import 'dart:typed_data';
 import 'dart:ui';
-
-import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_bill_dash_line.dart';
 import 'package:dragon_sword_purse/Find/Acceptance/Bill/View/tld_dash_line.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-class TLDDetailDiyQrcodeShowView extends StatefulWidget {
-  TLDDetailDiyQrcodeShowView({Key key,this.qrCode,this.amount,this.paymentName}) : super(key: key);
+class TLDRechargeQRCodeView extends StatefulWidget {
+  TLDRechargeQRCodeView({Key key,this.qrCode,this.amount}) : super(key: key);
 
-    final String qrCode;
+  final String qrCode;
 
   final String amount;
 
-  final String paymentName;
-
   @override
-  _TLDDetailDiyQrcodeShowViewState createState() => _TLDDetailDiyQrcodeShowViewState();
+  _TLDRechargeQRCodeViewState createState() => _TLDRechargeQRCodeViewState();
 }
 
-class _TLDDetailDiyQrcodeShowViewState extends State<TLDDetailDiyQrcodeShowView> {
- GlobalKey repainKey = GlobalKey();
+class _TLDRechargeQRCodeViewState extends State<TLDRechargeQRCodeView> {
+GlobalKey repainKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +35,7 @@ class _TLDDetailDiyQrcodeShowViewState extends State<TLDDetailDiyQrcodeShowView>
       children: <Widget>[
         RepaintBoundary(
           key : repainKey,
-          child:  _getQrView()
+          child: _getQrView()
         ),
         Padding(
           padding: EdgeInsets.only(top : ScreenUtil().setHeight(60)),
@@ -87,7 +83,7 @@ class _TLDDetailDiyQrcodeShowViewState extends State<TLDDetailDiyQrcodeShowView>
         children: <Widget>[
           Padding(
             padding:  EdgeInsets.only(top : ScreenUtil().setHeight(48)),
-            child: Text(widget.paymentName,style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(36),decoration: TextDecoration.none),),
+            child: Text('请打开USDT(Omni)钱包\n扫码支付',style: TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize : ScreenUtil().setSp(36),decoration: TextDecoration.none),textAlign: TextAlign.center,),
             ),
           Padding(padding: EdgeInsets.only(top : ScreenUtil().setHeight(40)),
           child: TLDDashLine(
@@ -112,7 +108,7 @@ class _TLDDetailDiyQrcodeShowViewState extends State<TLDDetailDiyQrcodeShowView>
         QrImage(data: widget.qrCode,size :ScreenUtil().setWidth(340)),
         Padding(
           padding: EdgeInsets.only(top : ScreenUtil().setHeight(60)),
-          child: Text('支付：¥'+widget.amount,style:TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(32),decoration: TextDecoration.none)),
+          child: Text('支付：'+widget.amount + ' USDT',style:TextStyle(color : Color.fromARGB(255, 51, 51, 51),fontSize: ScreenUtil().setSp(32),decoration: TextDecoration.none)),
         )
       ],
     );

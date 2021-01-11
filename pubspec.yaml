@@ -150,6 +150,13 @@ flutter:
      - assetss/images/icon_aaa_plus_star_unsel.png
      - assetss/images/icon_aaa_plus_star.png
      - assetss/images/new_transfer_icon.png
+     - assetss/images/find_wallet_icon.png
+     - assetss/images/find_sale_icon.png
+     - assetss/images/find_buy_icon.png
+     - assetss/images/find_transfer_icon.png
+     - assetss/images/tld_usdt.png
+     - assetss/images/usdt_tld.png
+     - assetss/images/transfer_qrcode.png
      
     
 

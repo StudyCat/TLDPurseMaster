@@ -163,6 +163,18 @@ void thirdAppTransferAccount(Map queryParameter,Function success,Function(TLDErr
     Uint8List decodeTxt =  convert.base64Decode(base64Txt);
     return decodeTxt;
    }
+
+class HexColor extends Color {
+  static int _getColorFromHex(String hexColor) {
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if (hexColor.length == 6) {
+      hexColor = "FF" + hexColor;
+    }
+    return int.parse(hexColor, radix: 16);
+  }
+
+  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+}
   
 
  

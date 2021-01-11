@@ -3,6 +3,7 @@ import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/Find/Transfer/Model/tld_new_transfer_model_manager.dart';
 import 'package:dragon_sword_purse/Find/Transfer/View/tld_new_transfer_cell.dart';
 import 'package:dragon_sword_purse/Find/Transfer/View/tld_new_transfer_form_view.dart';
+import 'package:dragon_sword_purse/Find/Transfer/View/tld_recharge_qr_code_view.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -31,6 +32,12 @@ class _TLDNewTransferPageState extends State<TLDNewTransferPage> {
   RefreshController _refreshController;
 
   TLDNewTransferModelManager _modelManager;
+
+  double _rate = 0;
+
+  String _paritiesStr = '获取汇率中';
+
+  TLDNewTransferFormControl _formControl;
   @override
   void initState() {
     // TODO: implement initState
@@ -39,11 +46,13 @@ class _TLDNewTransferPageState extends State<TLDNewTransferPage> {
     _refreshController = RefreshController(initialRefresh : true);
 
     _modelManager = TLDNewTransferModelManager();
+
+    _formControl = TLDNewTransferFormControl(false);
   }
 
 
   void _getTransferList(int page){
-     _modelManager.getTransferList(page, (List transferList){
+     _modelManager.getTransferList(page, (List transferList,String paritiesStr,double rate){
       _refreshController.refreshCompleted();
       _refreshController.loadComplete();
       if (page == 1){
@@ -51,6 +60,8 @@ class _TLDNewTransferPageState extends State<TLDNewTransferPage> {
       }
       setState(() {
         _dataSource.addAll(transferList);
+        _paritiesStr = paritiesStr;
+        _rate = rate;
       });
       _page = page + 1;
     }, (TLDError error){
@@ -60,11 +71,65 @@ class _TLDNewTransferPageState extends State<TLDNewTransferPage> {
     });
   }
 
+  void _withdraw(TLDNewTransferPramamter pramamter){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.withdraw(pramamter, (){
+      setState(() {
+        if(mounted){
+          _isLoading = false;
+        }
+      });
+      Fluttertoast.showToast(msg: '划转请求成功，等待工作人员审核');
+      _formControl.value = false;
+      _formControl.value = true;
+      _refreshController.requestRefresh();
+    }, (TLDError error){
+      setState(() {
+        if(mounted){
+          _isLoading = false;
+        }
+      });
+      Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+  void _recharge(TLDNewTransferPramamter pramamter){
+    setState(() {
+      _isLoading = true;
+    });
+    _modelManager.recharge(pramamter, (String qrCode,String amount){
+      setState(() {
+        if(mounted){
+          _isLoading = false;
+        }
+      });
+      _refreshController.requestRefresh();
+      _formControl.value = false;
+      _formControl.value = true;
+      showDialog(context: context,builder : (context){
+        return TLDRechargeQRCodeView(
+          qrCode: qrCode,
+          amount: amount,
+        );
+      });
+    }, (TLDError error){
+      setState(() {
+        if(mounted){
+          _isLoading = false;
+        }
+      });
+      Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
       body: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget(),),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
+      resizeToAvoidBottomInset : false,
       appBar: CupertinoNavigationBar(
         backgroundColor: Theme.of(context).primaryColor,
         actionsForegroundColor: Colors.white,
@@ -97,7 +162,15 @@ class _TLDNewTransferPageState extends State<TLDNewTransferPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              TLDNewTransferFormView(),
+              SingleChildScrollView(
+                child : TLDNewTransferFormView(paritiesStr: _paritiesStr,control: _formControl,rate: _rate,didClickSureBtnCallBack: (TLDNewTrasferType type,TLDNewTransferPramamter transferPramamter){
+                if (type == TLDNewTrasferType.usdtTotldType){
+                  _recharge(transferPramamter);
+                }else {
+                  _withdraw(transferPramamter);
+                }
+              },)
+              ),
               Padding(
                 padding: EdgeInsets.only(top : ScreenUtil().setHeight(20)),
                 child: Text('兑换单',style: TextStyle(color : Color.fromARGB(255, 102, 102, 102),fontSize : ScreenUtil().setSp(28)),),
@@ -114,7 +187,15 @@ class _TLDNewTransferPageState extends State<TLDNewTransferPage> {
     return ListView.builder(
       itemCount: _dataSource.length,
       itemBuilder: (BuildContext context, int index) {
-      return TLDNewTransferCell(listModel: _dataSource[index],);
+      TLDNewTransferListModel listModel = _dataSource[index];
+      return TLDNewTransferCell(listModel: listModel,didClickQrCodeCallBack: (){
+        showDialog(context: context,builder : (context){
+        return TLDRechargeQRCodeView(
+          qrCode: listModel.qrCode,
+          amount: listModel.usdtCount,
+        );
+      });
+      },);
      },
     );
   }

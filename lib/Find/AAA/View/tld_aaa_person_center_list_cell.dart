@@ -83,7 +83,7 @@ class _TLDAAAPersonCenterListCellState extends State<TLDAAAPersonCenterListCell>
         children: <Widget>[
           Container(
             width: ScreenUtil.screenWidth - ScreenUtil().setWidth(140),
-            child: Text('${widget.listModel.fromNickName}向${widget.listModel.toNickName}发起升级',style: TextStyle(fontSize: ScreenUtil().setSp(28),color: Color.fromARGB(255, 51, 51, 51))),
+            child: Text('${widget.listModel.fromNickName}升级向${widget.listModel.toNickName}馈赠',style: TextStyle(fontSize: ScreenUtil().setSp(28),color: Color.fromARGB(255, 51, 51, 51))),
           ),
           Padding(
             padding: EdgeInsets.only(top : ScreenUtil().setHeight(10)),

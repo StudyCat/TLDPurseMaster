@@ -28,6 +28,7 @@ import 'package:dragon_sword_purse/Find/RedEnvelope/View/tld_red_envelop_cell.da
 import 'package:dragon_sword_purse/Find/RootPage/Model/tld_find_root_model_manager.dart';
 import 'package:dragon_sword_purse/Find/RootPage/Page/tld_bill_Repaying_page.dart';
 import 'package:dragon_sword_purse/Find/RootPage/Page/tld_game_page.dart';
+import 'package:dragon_sword_purse/Find/RootPage/View/tld_aaa_find_header_cell.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_ad_banner_view.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tld_find_root_page_cell.dart';
 import 'package:dragon_sword_purse/Find/RootPage/View/tp_new_find_root_page_other_action_cell.dart';
@@ -59,7 +60,7 @@ class TLDFindRootPage extends StatefulWidget {
   _TLDFindRootPageState createState() => _TLDFindRootPageState();
 }
 
-class _TLDFindRootPageState extends State<TLDFindRootPage> {
+class _TLDFindRootPageState extends State<TLDFindRootPage>  {
   TLDFindRootModelManager _modelManager;
 
   List _bannerList = [];
@@ -67,6 +68,8 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
   List _iconDataSource = [];
 
   bool _isLoading = false;
+
+  String _balance = '0.0';
 
   @override
   void initState() {
@@ -82,6 +85,8 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
     _get3rdWebList();
 
     _getPlatformWeb();
+
+    _getTotlaAmount();
   }
 
   void _get3rdWebList() async {
@@ -144,6 +149,16 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
     _modelManager.getPlatform3rdWeb((List platformApps){
       _addWebAppInPage(platformApps);
     }, (error) {
+
+    });
+  }
+
+  void _getTotlaAmount(){
+    _modelManager.getAllAmount((String amount){
+      setState(() {
+        _balance = amount;
+      });
+    }, (TLDError error){
 
     });
   }
@@ -228,18 +243,18 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
       body: LoadingOverlay(isLoading: _isLoading, child: _getBodyWidget(),),
       backgroundColor: Color.fromARGB(255, 242, 242, 242),
       appBar: CupertinoNavigationBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).primaryColor,
         border: Border.all(
           color : Color.fromARGB(0, 0, 0, 0),
         ),
         heroTag: 'find_root_page',
         transitionBetweenRoutes: false,
-        middle: Text(I18n.of(context).findPageTitle,),
+        middle: Text(I18n.of(context).findPageTitle,style: TextStyle(color:Colors.white),),
         leading: Builder(builder: (BuildContext context) {
           return CupertinoButton(
               child: Icon(
                 IconData(0xe608, fontFamily: 'appIconFonts'),
-                color: Color.fromARGB(255, 51, 51, 51),
+                color: Colors.white,
               ),
               padding: EdgeInsets.all(0),
               minSize: 20,
@@ -256,7 +271,7 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
             CupertinoButton(
                 child: Icon(
                   IconData(0xe663, fontFamily: 'appIconFonts'),
-                  color: Color.fromARGB(255, 51, 51, 51),
+                  color: Colors.white,
                 ),
                 padding: EdgeInsets.all(0),
                 minSize: 20,
@@ -264,6 +279,7 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
                   Navigator.push(context, MaterialPageRoute(builder: (context) => TLDOrderListPage()));
                 }),
             MessageButton(
+              color: Colors.white,
               didClickCallBack: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) => TLDMessagePage()));
                 },
@@ -280,9 +296,7 @@ class _TLDFindRootPageState extends State<TLDFindRootPage> {
       itemCount: 3,
       itemBuilder: (context,index){
         if (index == 0){
-          return TLDFindRootADBannerView(bannerList: _bannerList,didClickBannerViewCallBack: (TLDBannerModel bannerModel){
-              Navigator.push(context, MaterialPageRoute(builder: (context)=> TLD3rdPartWebPage(isNeedHideNavigation: !bannerModel.isNeedNavigation,urlStr: bannerModel.bannerHref,)));
-          },);
+          return TLDAAAFindHeaderCell(balance: _balance,);
         }else if (index  == 1){
           TLDFindRootCellUIModel uiModel = _iconDataSource[index - 1];
           return TLDFindRootPageCell(uiModel: uiModel,didClickItemCallBack: (TLDFindRootCellUIItemModel itemModel){

@@ -17,12 +17,23 @@ import 'CommonWidget/tld_data_manager.dart';
 import 'tld_home_page.dart';
 import 'dart:io';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:aliossflutter/aliossflutter.dart';
 
 void main(){
   final JPush jPush = JPush();
 
   Future<void> initPlatformState() async {
     TLDNewIMManager().init();
+
+    AliOSSFlutter  alioss=AliOSSFlutter();
+    alioss.secretInit("LTAI4G77uU74Ddv5EX332h63", "jjK5dEFi2fnJOWeXsKgR705vLoHW2J","http://oss-cn-hangzhou.aliyuncs.com");
+    alioss.responseFromInit.listen((data){
+      if(data) { 
+          // _msg="初始化成功"; 
+      }else{
+        // _msg="初始化失败";
+      }
+    });
 
     jPush.setup(
       appKey: '3003807b24785e5d37bf681d',

@@ -4,6 +4,7 @@ import 'package:dragon_sword_purse/Find/Transfer/Model/tld_new_transfer_model_ma
 import 'package:dragon_sword_purse/Find/Transfer/View/tld_new_transfer_cell.dart';
 import 'package:dragon_sword_purse/Find/Transfer/View/tld_new_transfer_form_view.dart';
 import 'package:dragon_sword_purse/Find/Transfer/View/tld_recharge_qr_code_view.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 import 'package:dragon_sword_purse/generated/i18n.dart';
 import 'package:dragon_sword_purse/main.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,7 +38,11 @@ class _TLDNewTransferPageState extends State<TLDNewTransferPage> {
 
   String _paritiesStr = '获取汇率中';
 
+  TLDWalletInfoModel _walletInfoModel;
+
   TLDNewTransferFormControl _formControl;
+
+  TLDNewTransferFormUSDTAmountControl _usdtAmountControl;
   @override
   void initState() {
     // TODO: implement initState
@@ -47,12 +52,14 @@ class _TLDNewTransferPageState extends State<TLDNewTransferPage> {
 
     _modelManager = TLDNewTransferModelManager();
 
-    _formControl = TLDNewTransferFormControl(false);
+    _formControl = TLDNewTransferFormControl(null);
+
+    _usdtAmountControl = TLDNewTransferFormUSDTAmountControl('0');
   }
 
 
   void _getTransferList(int page){
-     _modelManager.getTransferList(page, (List transferList,String paritiesStr,double rate){
+     _modelManager.getTransferList(page, (List transferList,String paritiesStr,double rate,TLDWalletInfoModel walletInfoModel){
       _refreshController.refreshCompleted();
       _refreshController.loadComplete();
       if (page == 1){
@@ -62,6 +69,8 @@ class _TLDNewTransferPageState extends State<TLDNewTransferPage> {
         _dataSource.addAll(transferList);
         _paritiesStr = paritiesStr;
         _rate = rate;
+        _walletInfoModel = walletInfoModel;
+        _formControl.value = walletInfoModel;
       });
       _page = page + 1;
     }, (TLDError error){
@@ -82,8 +91,8 @@ class _TLDNewTransferPageState extends State<TLDNewTransferPage> {
         }
       });
       Fluttertoast.showToast(msg: '划转请求成功，等待工作人员审核');
-      _formControl.value = false;
-      _formControl.value = true;
+      _formControl.value = null;
+      _formControl.value = _walletInfoModel;
       _refreshController.requestRefresh();
     }, (TLDError error){
       setState(() {
@@ -106,8 +115,8 @@ class _TLDNewTransferPageState extends State<TLDNewTransferPage> {
         }
       });
       _refreshController.requestRefresh();
-      _formControl.value = false;
-      _formControl.value = true;
+      _formControl.value = null;
+      _formControl.value = _walletInfoModel;
       showDialog(context: context,builder : (context){
         return TLDRechargeQRCodeView(
           qrCode: qrCode,
@@ -121,6 +130,31 @@ class _TLDNewTransferPageState extends State<TLDNewTransferPage> {
         }
       });
       Fluttertoast.showToast(msg: error.msg);
+    });
+  }
+
+    void _getUSTDAmount(String amount,TLDNewTrasferType type){
+    // setState(() {
+    //   _isLoading = true;
+    // });
+    int _type = 0;
+    if (type == TLDNewTrasferType.usdtTotldType){
+      _type = 2;
+    }else {
+      _type = 1;
+    }
+    _modelManager.getAmount(amount, _type, (String usdtAmount){
+      setState(() {
+        // _isLoading = false;
+        _usdtAmountControl.value = '0';
+        _usdtAmountControl.value = usdtAmount;
+      });
+    }, (TLDError error){
+      setState(() {
+        _usdtAmountControl.value = '0';
+        _usdtAmountControl.value =  '计算USDT数量失败，请稍后再试';
+        // _isLoading = false;
+      });
     });
   }
 
@@ -163,12 +197,14 @@ class _TLDNewTransferPageState extends State<TLDNewTransferPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               SingleChildScrollView(
-                child : TLDNewTransferFormView(paritiesStr: _paritiesStr,control: _formControl,rate: _rate,didClickSureBtnCallBack: (TLDNewTrasferType type,TLDNewTransferPramamter transferPramamter){
+                child : TLDNewTransferFormView(paritiesStr: _paritiesStr,control: _formControl,amountControl: _usdtAmountControl,rate: _rate,walletInfoModel: _walletInfoModel,didClickSureBtnCallBack: (TLDNewTrasferType type,TLDNewTransferPramamter transferPramamter){
                 if (type == TLDNewTrasferType.usdtTotldType){
                   _recharge(transferPramamter);
                 }else {
                   _withdraw(transferPramamter);
                 }
+              },inputAmountCallBack: (TLDNewTrasferType type,String amount){
+                _getUSTDAmount(amount, type);
               },)
               ),
               Padding(

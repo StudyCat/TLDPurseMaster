@@ -1,3 +1,4 @@
+import 'package:dragon_sword_purse/Base/tld_base_request.dart';
 import 'package:dragon_sword_purse/CommonWidget/tld_amount_text_input_fprmatter.dart';
 import 'package:dragon_sword_purse/Exchange/FirstPage/Page/tld_exchange_choose_wallet.dart';
 import 'package:dragon_sword_purse/Find/Transfer/Model/tld_new_transfer_model_manager.dart';
@@ -7,18 +8,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 enum TLDNewTrasferType{
   usdtTotldType,
   tldTousdtType
 }
 
 
-class TLDNewTransferFormControl extends ValueNotifier<bool>{
-  TLDNewTransferFormControl(bool isSuccess) : super(isSuccess);
+class TLDNewTransferFormControl extends ValueNotifier<TLDWalletInfoModel>{
+  TLDNewTransferFormControl(TLDWalletInfoModel isSuccess) : super(isSuccess);
+}
+
+class TLDNewTransferFormUSDTAmountControl extends ValueNotifier<String>{
+  TLDNewTransferFormUSDTAmountControl(String amount) : super(amount);
 }
 
 class TLDNewTransferFormView extends StatefulWidget {
-  TLDNewTransferFormView({Key key, this.focusNode,this.paritiesStr,this.didClickSureBtnCallBack,this.rate,this.control})
+  TLDNewTransferFormView({Key key, this.focusNode,this.paritiesStr,this.didClickSureBtnCallBack,this.rate,this.control,this.amountControl,this.walletInfoModel,this.inputAmountCallBack})
       : super(key: key);
 
   final FocusNode focusNode;
@@ -31,6 +37,12 @@ class TLDNewTransferFormView extends StatefulWidget {
 
   final TLDNewTransferFormControl control;
 
+  final TLDNewTransferFormUSDTAmountControl amountControl;
+
+  final Function inputAmountCallBack;
+
+  TLDWalletInfoModel walletInfoModel;
+
   @override
   _TLDNewTransferFormViewState createState() => _TLDNewTransferFormViewState();
 }
@@ -42,14 +54,19 @@ class _TLDNewTransferFormViewState extends State<TLDNewTransferFormView> {
 
   TLDNewTransferPramamter _amountPramaterModel;
 
-  TLDWalletInfoModel _infoModel;
-
   TLDNewTrasferType _type = TLDNewTrasferType.usdtTotldType;
+
+  TLDNewTransferModelManager _modelManager;
+
+  String _usdtAmount = '0';
+
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+
+    _modelManager = TLDNewTransferModelManager();
 
     _amountController = TextEditingController();
 
@@ -57,26 +74,32 @@ class _TLDNewTransferFormViewState extends State<TLDNewTransferFormView> {
 
     _amountPramaterModel = TLDNewTransferPramamter();
     _amountPramaterModel.amount = '';
+    _amountPramaterModel.tldWalletAddress = widget.walletInfoModel != null ? widget.walletInfoModel.walletAddress : '';
 
     widget.control.addListener(() {
       setState(() {
-        if (widget.control.value == true){
+        if (widget.control.value != null){
           _amountController.text = '';
           _addressController.text = '';
-          _infoModel = null;
+          widget.walletInfoModel = widget.control.value;
           _amountPramaterModel = TLDNewTransferPramamter();
           _amountPramaterModel.amount = '';
+          _amountPramaterModel.tldWalletAddress = widget.walletInfoModel.walletAddress;
         }
+      });
+    });
+
+    widget.amountControl.addListener(() {
+      setState(() {
+        _usdtAmount = widget.amountControl.value;
       });
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
-    String anticipatedAmount = '0';
-    if (_amountPramaterModel.amount.length > 0 && widget.rate > 0){
-      anticipatedAmount = (double.parse(_amountPramaterModel.amount) / widget.rate).toString();
-    }
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(4)),
@@ -117,15 +140,13 @@ class _TLDNewTransferFormViewState extends State<TLDNewTransferFormView> {
                       style: TextStyle(
                           color: Color.fromARGB(255, 102, 102, 102),
                           fontSize: ScreenUtil().setSp(24))),
-                  Text(widget.rate > 0 ? anticipatedAmount + ' USDT' : '获取实时汇率中',
+                  Text(_usdtAmount + ' USDT',
                       style: TextStyle(
                           color: Color.fromARGB(255, 102, 102, 102),
                           fontSize: ScreenUtil().setSp(24))),
                 ]),
           ),
-          Offstage(
-            offstage: _infoModel == null,
-            child:  Padding(
+         Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(10)),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,12 +155,11 @@ class _TLDNewTransferFormViewState extends State<TLDNewTransferFormView> {
                       style: TextStyle(
                           color: Color.fromARGB(255, 102, 102, 102),
                           fontSize: ScreenUtil().setSp(24))),
-                  Text(_infoModel == null ? '' : _infoModel.value + ' TLD',
+                  Text(widget.walletInfoModel == null ? '' : widget.walletInfoModel.value + ' TLD',
                       style: TextStyle(
                           color: Color.fromARGB(255, 102, 102, 102),
                           fontSize: ScreenUtil().setSp(24))),
                 ]),
-          ),
           ),
           Padding(
             padding: EdgeInsets.only(top: ScreenUtil().setHeight(10)),
@@ -211,6 +231,7 @@ class _TLDNewTransferFormViewState extends State<TLDNewTransferFormView> {
                 _type = TLDNewTrasferType.usdtTotldType;
               }
             });
+            widget.inputAmountCallBack(_type,_amountPramaterModel.amount);
           },
           child: Container(
           height: ScreenUtil().setHeight(142),
@@ -267,15 +288,17 @@ class _TLDNewTransferFormViewState extends State<TLDNewTransferFormView> {
 
   Widget _getTransferAmountWidget() {
     return Container(
-      height: ScreenUtil().setHeight(72),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Divider(indent: 0,endIndent: 0,height: ScreenUtil().setHeight(4),color: Color.fromARGB(255, 228, 228, 228),),
+      height: ScreenUtil().setHeight(100),
+      decoration: BoxDecoration(color: Color.fromARGB(255, 242, 242, 242),borderRadius: BorderRadius.all(Radius.circular(4))),
+      child: 
+      // Column(
+      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      //   children: <Widget>[
+          // Divider(indent: 0,endIndent: 0,height: ScreenUtil().setHeight(4),color: Color.fromARGB(255, 228, 228, 228),),
           _getTransferAmountRowWidget(),
-          Divider(indent: 0,endIndent: 0,height: ScreenUtil().setHeight(4),color: Color.fromARGB(255, 228, 228, 228),),
-        ],
-      ),
+          // Divider(indent: 0,endIndent: 0,height: ScreenUtil().setHeight(4),color: Color.fromARGB(255, 228, 228, 228),),
+      //   ],
+      // ),
     );
   }
 
@@ -283,71 +306,73 @@ class _TLDNewTransferFormViewState extends State<TLDNewTransferFormView> {
     return  Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Stack(
-            alignment: FractionalOffset(0.8, 0.6),
+          Row(
+            // alignment: FractionalOffset(0.8, 0.6),
             children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
+                child: Text('TLD',
+                  style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: ScreenUtil().setSp(44))),
+              ),
               Container(
-                  width: ScreenUtil().setWidth(480),
-                  height: ScreenUtil().setWidth(68),
+                  width: MediaQuery.of(context).size.width - ScreenUtil().setWidth(400),
+                  height: ScreenUtil().setWidth(100),
                   padding: EdgeInsets.only(right: ScreenUtil().setWidth(20)),
                   child: CupertinoTextField(
-                    enabled: _infoModel == null ? false : true,
+                    enabled: widget.walletInfoModel == null ? false : true,
                     decoration: BoxDecoration(
+                      color: Color.fromARGB(255, 242, 242, 242),
                       border : Border.all(color :Color.fromARGB(0, 0, 0, 0))
                     ),
                     style: TextStyle(
                         color: Theme.of(context).primaryColor,
-                        fontSize: ScreenUtil().setSp(24),
+                        fontSize: ScreenUtil().setSp(44),
                         textBaseline: TextBaseline.alphabetic),
                     controller: _amountController,
                     placeholder: _type == TLDNewTrasferType.usdtTotldType ? '请输入充值数量' : '请输入提现数量',
                     placeholderStyle: TextStyle(
                         color: Color.fromARGB(255, 153, 153, 153),
-                        fontSize: ScreenUtil().setSp(24),
+                        fontSize: ScreenUtil().setSp(30),
                         textBaseline: TextBaseline.alphabetic),
                     focusNode: widget.focusNode,
                     inputFormatters: [TLDAmountTextInputFormatter()],
                     onChanged: (String text){
                       _amountPramaterModel.amount = text;
+                      widget.inputAmountCallBack(_type,text);
                     },
                   )),
-              Text('TLD',
-                  style: TextStyle(
-                      color: Theme.of(context).primaryColor,
-                      fontSize: ScreenUtil().setSp(24)))
             ],
           ),
           Offstage(
             offstage: _type == TLDNewTrasferType.usdtTotldType,
             child: Container(
-              height: ScreenUtil().setWidth(68),
+              height: ScreenUtil().setWidth(100),
               child: Row(
             children: <Widget>[
-              VerticalDivider(indent: 2,endIndent: 2,width: ScreenUtil().setHeight(4),color: Color.fromARGB(255, 228, 228, 228),),
+              VerticalDivider(indent: 2,endIndent: 2,width: ScreenUtil().setHeight(6),color: Color.fromARGB(255, 228, 228, 228),),
               GestureDetector(
               onTap: () {
-                if (_infoModel != null){
+                if (widget.walletInfoModel != null){
                   setState(() {
-                    _amountPramaterModel.amount = _infoModel.value;
-                    _amountController.text = _infoModel.value;
+                    _amountPramaterModel.amount = widget.walletInfoModel.value;
+                    _amountController.text = widget.walletInfoModel.value;
                   });
+                  widget.inputAmountCallBack(_type,_amountPramaterModel.amount);
                 }
               },
               child: Padding(
-                padding: EdgeInsets.only(left : ScreenUtil().setWidth(20)),
+                padding: EdgeInsets.only(right : ScreenUtil().setWidth(20),left:ScreenUtil().setWidth(20)),
                 child: Container(
-                height: ScreenUtil().setHeight(48),
-                width: ScreenUtil().setWidth(96),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.all(Radius.circular(2))
-                ),
+                height: ScreenUtil().setHeight(100),
+                width: ScreenUtil().setWidth(100),
                 child: Center(
                   child: Text(
                     '全部',
                     style: TextStyle(
-                        color: Colors.white,
-                        fontSize: ScreenUtil().setSp(24)),
+                        color: Color.fromARGB(255, 51, 51, 51),
+                        fontSize: ScreenUtil().setSp(44)),
                   )),
                 ),
               ),
@@ -372,7 +397,7 @@ class _TLDNewTransferFormViewState extends State<TLDNewTransferFormView> {
             Navigator.push(context, MaterialPageRoute(builder : (context){
               return TLDEchangeChooseWalletPage(didChooseWalletCallBack: (TLDWalletInfoModel infoModel){
                 setState(() {
-                  _infoModel = infoModel;
+                  widget.walletInfoModel = infoModel;
                   _amountPramaterModel.tldWalletAddress = infoModel.walletAddress;
                 });
               },);
@@ -395,7 +420,7 @@ class _TLDNewTransferFormViewState extends State<TLDNewTransferFormView> {
                     ScreenUtil().setWidth(310) -
                     ScreenUtil().setHeight(60),
                 child: Text(
-                    _infoModel == null ? '请选择钱包' : _infoModel.walletAddress,
+                    widget.walletInfoModel == null ? '请选择钱包' : widget.walletInfoModel.walletAddress,
                     maxLines: 2,
                     style: TextStyle(
                         color: Color.fromARGB(255, 102, 102, 102),

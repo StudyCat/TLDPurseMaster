@@ -106,7 +106,7 @@ class TLDFindRootModelManager {
         TLDFindRootCellUIItemModel(title: '钱包', imageAssest: 'assetss/images/find_wallet_icon.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(title: '购买', imageAssest: 'assetss/images/find_buy_icon.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(title: '出售', imageAssest: 'assetss/images/find_sale_icon.png',isPlusIcon: false),
-        TLDFindRootCellUIItemModel(title: '划转', imageAssest: 'assetss/images/find_transfer_icon.png',isPlusIcon: false),
+        TLDFindRootCellUIItemModel(title: '提现与充值', imageAssest: 'assetss/images/find_transfer_icon.png',isPlusIcon: false),
         TLDFindRootCellUIItemModel(title: '', imageAssest: '',isPlusIcon: true),
       ])
     ];

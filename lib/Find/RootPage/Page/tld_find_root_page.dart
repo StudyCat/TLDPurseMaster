@@ -38,6 +38,8 @@ import 'package:dragon_sword_purse/Message/Page/tld_message_page.dart';
 import 'package:dragon_sword_purse/NewMission/FirstPage/Page/tld_new_mission_first_page.dart';
 import 'package:dragon_sword_purse/Notification/tld_more_btn_click_notification.dart';
 import 'package:dragon_sword_purse/Order/Page/tld_order_list_page.dart';
+import 'package:dragon_sword_purse/ProtocolMission/ChoosePlatform/Page/tld_protocol_mission_choose_platform_page.dart';
+import 'package:dragon_sword_purse/ProtocolMission/CreateMission/Page/tld_protocol_mission_create_mission_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/Page/tld_purse_page.dart';
 import 'package:dragon_sword_purse/Purse/FirstPage/View/message_button.dart';
 import 'package:dragon_sword_purse/Sale/FirstPage/Page/tld_sale_page.dart';
@@ -348,11 +350,17 @@ class _TLDFindRootPageState extends State<TLDFindRootPage>  {
                           MaterialPageRoute(
                               builder: (context) => TLDTabSalePage(
                                   )));
-                      }else if (itemModel.title == '划转'){
-                        Navigator.push(
+                      }else if (itemModel.title == '提现与充值'){
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => TLDNewTransferPage(
+                      //             )));
+                      // }
+                      Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => TLDNewTransferPage(
+                              builder: (context) => TLDProtocolMissionCreateMissionPage(
                                   )));
                       }
                     }

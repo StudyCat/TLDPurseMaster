@@ -39,6 +39,7 @@ class TLDBaseRequest{
   bool isNeedSign;
   String walletAddress;
 
+
   final String publicKey = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCF2Bviwh62uKqlN5uVETTzJEvfulFINwzm3RvKAl8APIe3uEQgt6CHAlzx40yMXqGMvsc+cUcAFRRoyKkvjUDlw5cELn2eBtvZ660uGxL/YB7y9zXLNisrJNu+lcqYBqwbIL3iMrpPXkOqwiiRfDkpvypwLMUl+1fAcWF+iS9BJQIDAQAB";
 
 

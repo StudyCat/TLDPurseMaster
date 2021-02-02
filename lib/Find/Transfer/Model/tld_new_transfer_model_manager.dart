@@ -1,6 +1,7 @@
 import 'dart:convert' show json;
 
 import 'package:dragon_sword_purse/Base/tld_base_request.dart';
+import 'package:dragon_sword_purse/Purse/FirstPage/Model/tld_wallet_info_model.dart';
 
 T asT<T>(dynamic value) {
   if (value is T) {
@@ -104,7 +105,8 @@ class TLDNewTransferModelManager {
       Map paritiesMap = value['data'];
       String paritiesStr = paritiesMap['rateDesc'];
       double rate = paritiesMap['rate'];
-      success(result, paritiesStr, rate);
+      TLDWalletInfoModel wallet = TLDWalletInfoModel.fromJson(paritiesMap['walletObj']);
+      success(result, paritiesStr, rate,wallet);
     }, (error) => failure(error));
   }
 
@@ -130,6 +132,16 @@ class TLDNewTransferModelManager {
       String qrCode = value['qrCode'];
       String amount = value['usdtCount'];
       success(qrCode, amount);
+    }, (error) => failure(error));
+  }
+
+  void getAmount(String amount,int type, Function success, Function failure) {
+    TLDBaseRequest request = TLDBaseRequest({
+      'tldCount': amount,
+      'type': type // 1提现 2 充值
+    }, 'wallet/usdtRateCompute');
+    request.postNetRequest((value) {
+      success(value);
     }, (error) => failure(error));
   }
 }
